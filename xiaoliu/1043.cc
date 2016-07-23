@@ -8,15 +8,14 @@
 #include<stdio.h>
 #include<malloc.h>
 using namespace std;
-int w[]={(int)"P",(int)"A",
-	     (int)"T",(int)"e",
-		 (int)"s",(int)"t"};
+ int w[]={(int)'P',(int)'A',
+	     (int)'T',(int)'e',
+		 (int)'s',(int)'t'};
 int main(){
 	char * p = (char*)malloc(10000*sizeof(char));
     int a[200]={0};
 	scanf("%s",p);
     for(int i=0;p[i]!='\0';i++){
-		cout<<(int)p[i]<<endl;
        a[(int)p[i]]++;   
 	}
     bool has = false;
