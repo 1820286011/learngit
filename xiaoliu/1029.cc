@@ -8,6 +8,9 @@
 #include<stdio.h>
 #include<string>
 using namespace std;
+char to(const char &a){
+	if(a>='a'||a<='z')return toupper(a);
+}
 int main(){  
 	string ss1;
 	string ss2;
@@ -23,20 +26,19 @@ int main(){
 	//scanf("%s",s1);
 	//scanf("%s",s2);
 	for(int i=0;s1[i]!='\0';i++){
-		bad[(int)s1[i]]=true;
+		bad[(int)to(s1[i])]=true;
 	}
 	for(int i=0;s2[i]!='\0';i++){
-		if(bad[(int)s2[i]]){
-			bad[(int)s2[i]]=false;
+		if(bad[(int)to(s2[i])]){
+			bad[(int)to(s2[i])]=false;
 		}
 	}
 	for(int i=0;s1[i]!='\0';i++){
-		if(bad[(int)s1[i]]){
-			cout<<s1[i];
-            bad[(int)s1[i]]=false;
+		if(bad[(int)to(s1[i])]){
+			cout<<to(s1[i]);
+            bad[(int)to(s1[i])]=false;
 		}
 	}
 	cout<<endl;
-	cout<<'Z';
 	return 0;
 }
