@@ -1,0 +1,38 @@
+ ///
+ /// @file    Eventfd.h
+ /// @author  wyy
+ /// @date    2016-08-21 01:29:21
+ ///
+ 
+#ifndef _WYY_EVENTFD_H_
+#define _WYY_EVENTFD_H_
+#include<sys/eventfd.h>
+#include<poll.h>
+#include<iostream>
+#include<functional>
+
+namespace wyy
+{
+class Eventfd
+{
+	public:
+		typedef std::function<void()> EventfdCallback;
+		Eventfd(EventfdCallback cb);
+		~Eventfd();
+		void start();
+		void stop();
+		void wakeup();
+	private:
+		void handleRead();
+	    int _fd;
+		bool _isStarted;
+		EventfdCallback _cb;
+};
+
+
+
+}
+
+
+
+#endif
