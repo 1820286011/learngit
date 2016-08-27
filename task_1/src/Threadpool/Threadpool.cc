@@ -7,6 +7,7 @@
 #include "Threadpool.h"
 #include "Buffer.h"
 #include "thread.h"
+#include "../Cache.h"
 namespace wyy
 {
 	Threadpool::Threadpool(size_t threadNum,size_t buffSize)
@@ -14,6 +15,8 @@ namespace wyy
 	,_buffSize(buffSize)
 	,_isExit(false)
 	,_buffer(buffSize)
+	,_timethreadcache(10,20,std::bind(&Threadpool::updCache,this))
+	,_timethreadfile(20,100,std::bind(&Threadpool::updFile,this))
 	{
 	}
    Threadpool::~Threadpool()
@@ -24,10 +27,16 @@ namespace wyy
 	{
 		for(size_t i=0;i<_threadNum;i++)
 		{
-			Thread*pthread=new Thread(std::bind(&Threadpool::threadFunc,this));
+			Cache*pcache=new Cache();
+			pcache->readFromFile("Cache_to_out.txt");
+			Thread*pthread=new Thread(std::bind(&Threadpool::threadFunc,this,pcache));
 			pthread->start();
 			_threads.push_back(pthread);
+			_caches.push_back(pcache);
 		}
+		_timethreadcache.start();
+		_timethreadfile.start();
+
 	}
 	void Threadpool::stop()
 	{
@@ -56,14 +65,36 @@ namespace wyy
 		return _buffer.pop();
 	}
 	
-	void Threadpool::threadFunc()
+	void Threadpool::threadFunc(Cache* pcache)
 	{
+		
 		while(!_isExit)
 		{
 			Task task=getTask();
 			if(task)
-			task();
+			task(pcache);
+			
+		
 		}
+	}
+
+	void Threadpool::updCache()
+	{
+		for(int i=0;i<_caches.size();i++)
+		{
+			_sumcache.update(*_caches[i]);
+		}
+		for(int i=0;i<_caches.size();i++)
+		{
+			Cache*p=_caches[i];
+			p->update(_sumcache);
+		}
+		
+	}
+
+	void Threadpool::updFile()
+	{
+		_sumcache.writeToFile("Cache_to_out.txt");
 	}
 
 

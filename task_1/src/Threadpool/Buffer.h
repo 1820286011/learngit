@@ -7,6 +7,7 @@
 #define WYY_BUFFER_H
 #include "MutexLock.h"
 #include "Condition.h"
+#include "../Cache.h" 
 #include <iostream>
 #include <functional>
 #include <queue>
@@ -16,7 +17,7 @@ using std::queue;
 using std::function;
 namespace wyy
 {
-typedef function<void()> Task;
+typedef function<void(Cache*)> Task;
 class Buffer
 {
 	public:

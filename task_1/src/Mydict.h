@@ -13,6 +13,7 @@ class Mydict
 		void init(const char *dictEnPath,const char*dictCnPath=NULL);
 		vector<pair<string,int> >& getDict();
 		map<string,set<int> >& getIndexTable();
+		int judge(char c);
 	private:
 		Mydict(){}
 		vector<pair<string,int> >_dict;
@@ -33,6 +34,7 @@ vector<pair<string,int> >& Mydict::getDict()
 {
 	return _dict;
 }
+
 map<string,set<int> >& Mydict::getIndexTable()
 {
 	return _index_table;
@@ -52,11 +54,27 @@ void Mydict::init(const char *dictEnPath,const char*dictCnPath)
 		for(int i=0;i<(itm->first).size();i++)
 		{
 			
-			stringstream stream;
+		
 			string str;
 			set<int> setp;
-			stream<<(itm->first)[i];
-			str=stream.str();
+			if((itm->first)[i] > 0)
+			 str.push_back(itm->first[i]);
+			
+			else
+			{
+				
+				str.push_back(itm->first[i]);
+				int j=judge(itm->first[i]);
+				if(j)
+				{
+				int k;
+				for( k=i+1;k<i+j;k++)
+				str.push_back(itm->first[k]);
+				i+=j-1;
+				}
+				
+			}
+			
 			its=_index_table.find(str);
 			
 
@@ -76,5 +94,19 @@ void Mydict::init(const char *dictEnPath,const char*dictCnPath)
 		index++;
 		
 	}
+
+}
+int Mydict::judge(char c)
+{
+    char result[8]={0};
+	int num=0;
+	for(int i=0;i<8;i++)
+	   {	
+		   result[i]=c&(0x80>>i);
+		   if(result[i])
+				num++;
+		   else
+			   return num;
+	   }
 
 }

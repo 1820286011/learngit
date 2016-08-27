@@ -3,7 +3,7 @@
  /// @author  wyy
  /// @date    2016-08-07 04:57:35
  ///
- 
+#include<string.h>
 #include <iostream>
 #include<map>
 #include<string>
@@ -91,6 +91,10 @@ void ProDict:: readFile(const string filename)
 				else if(p<='Z'&&p>='A')
 				{
 					p=p-'A'+'a';
+					stemp.push_back(p);
+				}
+				else if(p<0)
+				{
 					stemp.push_back(p);
 				}
 				else

@@ -8,8 +8,8 @@
 using namespace std;
 int main()
 {
-	Mydict::createInstance()->init("../data/source1.txt");
-	MyTask *p=new MyTask("phonewyy",1);
+	Mydict::createInstance()->init("../data/C3-Art0002.txt");
+	MyTask *p=new MyTask("中国",1);
 	p->queryIndexTable();
 	return 0;
 }
